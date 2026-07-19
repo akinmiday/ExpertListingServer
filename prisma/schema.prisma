@@ -1,0 +1,60 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String    @id
+  name      String
+  avatar    String
+  role      String
+  hasStatus Boolean   @default(false) @map("has_status")
+  posts     Post[]
+  comments  Comment[]
+  likes     Like[]
+
+  @@map("users")
+}
+
+model Post {
+  id             String    @id
+  userId         String    @map("user_id")
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type           String
+  body           String
+  location       String
+  listingType    String?   @map("listing_type")
+  media          Json?     // Array of attachments
+  bookmarksCount Int       @default(0) @map("bookmarks_count")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  comments       Comment[]
+  likes          Like[]
+
+  @@map("posts")
+}
+
+model Comment {
+  id        String   @id
+  postId    String   @map("post_id")
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  body      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("comments")
+}
+
+model Like {
+  postId String @map("post_id")
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([postId, userId])
+  @@map("likes")
+}
