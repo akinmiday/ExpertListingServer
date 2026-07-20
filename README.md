@@ -24,9 +24,10 @@ cp .env.example .env
 ```
 Open the `.env` file. Set the `DATABASE_URL` value.
 
-**Step 3.** Push the schema to the database.
+**Step 3.** Push the schema and generate the Prisma client.
 ```bash
-npx prisma db push
+npm run db:push
+npm run db:generate
 ```
 
 **Step 4.** Add sample data.

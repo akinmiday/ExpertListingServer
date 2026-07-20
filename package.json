@@ -6,8 +6,10 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "nodemon -e ts --exec \"(npm run build && node dist/server.js) || exit 1\"",
-    "seed": "node dist/seed.js",
-    "build": "tsc"
+    "build": "tsc",
+    "seed": "ts-node seed.ts",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push"
   },
   "keywords": [],
   "author": "",
@@ -29,5 +31,8 @@
     "prisma": "^5.22.0",
     "ts-node": "^10.9.2",
     "typescript": "^7.0.2"
+  },
+  "prisma": {
+    "seed": "ts-node seed.ts"
   }
 }

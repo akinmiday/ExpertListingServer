@@ -336,6 +336,28 @@ app.post('/posts', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+// 6. DELETE /posts/:id - Delete a post
+app.delete('/posts/:id', async (req: Request, res: Response, next: NextFunction) => {
+  const id = req.params.id as string;
+  try {
+    const post = await prisma.post.findUnique({ where: { id } });
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    // Restrict deletion to the owner
+    if (post.userId !== req.userId) {
+      return res.status(403).json({ error: 'Unauthorized to delete this post' });
+    }
+
+    await prisma.post.delete({ where: { id } });
+
+    res.json({ success: true, message: 'Post deleted successfully' });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // -------------------------------------------------------------
 // ERROR HANDLER MIDDLEWARE
 // -------------------------------------------------------------
