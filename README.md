@@ -18,11 +18,8 @@ This is the API server for Expert Listing. It uses Node.js, Express, and Postgre
 npm install
 ```
 
-**Step 2.** Create the environment file.
-```bash
-cp .env.example .env
-```
-Open the `.env` file. Set the `DATABASE_URL` value.
+**Step 2.** Configure the environment file.
+Verify that the `.env` file exists in the root folder, and set the `DATABASE_URL` value.
 
 **Step 3.** Push the schema and generate the Prisma client.
 ```bash
